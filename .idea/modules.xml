@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/MuzeyGames.iml" filepath="$PROJECT_DIR$/.idea/MuzeyGames.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/.idea/flask_project.iml" filepath="$PROJECT_DIR$/.idea/flask_project.iml" />
+>>>>>>> 10a670e (++)
     </modules>
   </component>
 </project>

@@ -24,7 +24,6 @@ def send_email(email, title, text, att):
     return True
 
 
-
 def process_attachments(msg, att):
     for file in att:
         if os.path.isfile(file):
@@ -37,13 +36,13 @@ def process_attachments(msg, att):
 
 def attach_file(msg, file):
     attach_type = {
-        "text" : MIMEText,
+        "text": MIMEText,
         "image": MIMEImage,
         "audio": MIMEAudio
     }
     filename = os.path.basename(file)
     ctype, encoding = mimetypes.guess_type(file)
-    if ctype is None or encoding is not  None:
+    if ctype is None or encoding is not None:
         ctype = "applicetion/octet-stream"
     maintype, subtype = ctype.split("/", 1)
     with open(file, mode="rb" if maintype != "text" else "r") as fp:
@@ -55,4 +54,3 @@ def attach_file(msg, file):
             encoders.encode_base64(file_)
     file_.add_header("Content-Disposition", "attachment", filename=filename)
     msg.attach(file_)
-

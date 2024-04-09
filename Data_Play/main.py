@@ -4,6 +4,7 @@ import pygame
 import sys
 pygame.font.init()
 timer = pygame.time.Clock()
+IM_coef = float(input("Коэффициэнт изображений(базовый - 1)"))
 SCREEN_WIDTH = int(input())
 SCREEN_HEIGHT = int(input())
 fonts = pygame.font.Font("resource/cheri.ttf", 30)
@@ -17,6 +18,13 @@ manipulator = Litties()
 cont = conteiner()
 player_sprites.add(player_sprites)
 pause = False
+while True:
+    with open('uic.txt', 'r') as file:
+        if not 'None' in file.read() or file.read() != '':
+            break
+
+
+
 while True:
     block = pygame.transform.scale(pygame.image.load("resource/blocks.png"), (SCREEN_WIDTH, SCREEN_HEIGHT // 3 * 2))
     fon = pygame.transform.scale(pygame.image.load("resource/fon.png"), (SCREEN_WIDTH, SCREEN_HEIGHT))

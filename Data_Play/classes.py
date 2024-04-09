@@ -1,11 +1,17 @@
 import time
 import pygame
-from main import SCREEN_WIDTH, SCREEN_HEIGHT
+from main import SCREEN_WIDTH, SCREEN_HEIGHT, IM_coef
 from pygame import font
+
 
 class Litties(pygame.sprite.Sprite):
     def __init__(self):
-        self.images = [pygame.image.load(f"resource/anim{i}.png") for i in range(3)]
+        print((
+            pygame.image.load(f"resource/anim{1}.png").get_width() * IM_coef,
+            pygame.image.load(f"resource/anim{1}.png").get_height() * IM_coef))
+        self.images = [pygame.transform.scale(pygame.image.load(f"resource/anim{i}.png"), (
+            int(pygame.image.load(f"resource/anim{i}.png").get_width() * IM_coef),
+            int(pygame.image.load(f"resource/anim{i}.png").get_height() * IM_coef))) for i in range(3)]
         self.image = self.images[0]
         self.rect = self.image.get_rect()
         self.rect.x = 0
@@ -13,7 +19,6 @@ class Litties(pygame.sprite.Sprite):
         self.findow = False
         self.count = 0
         self.fl_cont = False
-
 
     def update_position(self, n):
         print(self.image.get_height())
@@ -36,12 +41,12 @@ class Litties(pygame.sprite.Sprite):
     def anim_lit(self, cont):
         self.count += 1
         print("Попытка")
-        if self.count <= 2 and (abs(self.rect.centerx - (SCREEN_WIDTH // 2)) < 100 and self.fl_cont):
+        if self.count <= 2 and (abs(self.rect.centerx - (SCREEN_WIDTH // 2)) < 300 and self.fl_cont):
             print("выполняю")
             self.image = self.images[self.count]
         elif self.count > 2:
             time.sleep(3)
-            cont.image = pygame.transform.scale(cont.images[1], (600, 600))
+            cont.image = pygame.transform.scale(cont.images[1], (600 * IM_coef, 600 * IM_coef))
             cont.fl_activ = True
             return 0
         else:
@@ -49,10 +54,11 @@ class Litties(pygame.sprite.Sprite):
             self.count = 0
             self.findow = 0
 
+
 class conteiner(pygame.sprite.Sprite):
     def __init__(self):
         self.images = [pygame.image.load("resource/don_none.png"), pygame.image.load("resource/don_full.png")]
-        self.image = pygame.transform.scale(self.images[0], (600, 600))
+        self.image = pygame.transform.scale(self.images[0], (600 * IM_coef, 600 * IM_coef))
         self.rect = self.image.get_rect()
         self.rect.centerx = SCREEN_WIDTH // 2
         self.rect.centery = SCREEN_HEIGHT // 3 * 2.05

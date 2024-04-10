@@ -3,6 +3,8 @@ import time
 import serial
 import requests
 i = 0
+with open('uic.txt', "w") as f:
+    f.write("")
 
 for i in range(10):
     try:

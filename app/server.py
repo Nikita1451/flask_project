@@ -1,15 +1,14 @@
-from flask import Flask, render_template, redirect, request, abort
+from flask import Flask, render_template, redirect, url_for
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
 from forms.user import RegisterForm, LoginForm
 from data.users import User
 from data import db_session
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 login_manager = LoginManager()
 login_manager.init_app(app)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
-f = False
 
 
 @login_manager.user_loader
@@ -18,36 +17,35 @@ def load_user(user_id):
     return db_sess.query(User).get(user_id)
 
 
-@app.route("/play")
+@app.route("/play/<int:fabric_id>")
 @login_required
-def play():
-    return render_template("index.html")
+def play(fabric_id):
+    return render_template(f"game_{fabric_id}.html")
+    # для других фабрик нужно добавить пути
 
 
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
-    f = False
     return redirect("/")
-
-
-def main():
-    db_session.global_init("db/blogs.db")
-    app.run()
 
 
 @app.route("/")
 def index():
-    if f:
-        print('fff')
-        return render_template("main.html")
-    return redirect('/register')
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
+    # Достаем из БД, параметр passed из отдельной таблицы, соединяющей user and fabric
+    fabrics = [
+        {"id": 1, "title": "ЛТЗ", "image": "ltz.jpg", "passed": True},
+        {"id": 2, "title": "СЧЗ", "image": "schz.jpg", "passed": False},
+        {"id": 3, "title": "Людиново-кабель", "image": "ludinovo_cabel.jpg", "passed": False},
+    ]
+    return render_template('main.html', title='Заводы Людиново', fabrics=fabrics)
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    global f
     form = RegisterForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
@@ -68,17 +66,27 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    global f
     form = LoginForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
         user = db_sess.query(User).filter(User.email == form.email.data).first()
         if user:
             login_user(user, remember=form.remember_me.data)
-            f = True
             return redirect("/")
         return render_template('login.html', message="Неправильный логин или пароль", form=form)
     return render_template('login.html', title='Авторизация', form=form)
+
+
+@app.route('/add_score', methods=['POST'])
+def add_score():
+    # здесь нужно отправить запрос к БД, в котором для фабрики, которую прошел пользователь, будет проставлено passed
+    print(current_user)
+    return 'OK'
+
+
+def main():
+    db_session.global_init("db/blogs.db")
+    app.run(debug=True)
 
 
 if __name__ == '__main__':

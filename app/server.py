@@ -20,7 +20,7 @@ app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 def diplom(play_id):
     print("проверка")
     if request.method == 'POST':
-        print("проверка  2")
+        print("проверка   2")
         return render_template(f"base.html")
     return render_template(f"gr_{play_id}.html")
 

@@ -13,7 +13,7 @@ app = Flask(__name__, static_url_path='/static')
 load_dotenv()
 login_manager = LoginManager()
 login_manager.init_app(app)
-app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
+app.config['SECRET_KEY'] = 'yandexlyceum_secret _key'
 
 
 @app.route('/diploms/<play_id>', methods=["GET", 'POST'])

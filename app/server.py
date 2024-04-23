@@ -62,7 +62,7 @@ def index():
     fabrics = [
         {"id": 1, "title": "ЛТЗ", "image": "ltz.jpg", "passed": True},
         {"id": 2, "title": "СЧЗ", "image": "schz.jpg", "passed": False},
-        {"id": 3, "title": "Людиново-кабель", "image": "ludinovo_cabel.jpg", "passed": False},
+        {"id": 3, "title": "Людиновокабель", "image": "ludinovo_cabel.jpg", "passed": False},
     ]
     return render_template('main.html', title='Заводы Людиново', fabrics=fabrics)
 

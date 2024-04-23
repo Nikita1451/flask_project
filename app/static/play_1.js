@@ -32,17 +32,17 @@ var flag_of = false;
 var put_on = false;
 
 function preload() {
-    this.load.image('corp', '/static/img/Кузов.png');
-    this.load.image('shassi', '/static/img/шасси.png');
-    this.load.image("shassi_none", '/static/img/шасси_тень.png')
-    this.load.image("corp_none", '/static/img/Кузов_тень.png')
-    this.load.image("background", '/static/img/фон.png')
-    this.load.audio("set_us", '/static/img/sound_set.mp3');
-    this.load.image("wheel", '/static/img/колёсные_пары.png');
-    this.load.image("wheel_none", '/static/img/колёсные_пары_тень.png');
-    this.load.image("box1", '/static/img/box.png');
-    this.load.image("box2", '/static/img/box.png');
-    this.load.image("box3", '/static/img/box.png');
+    this.load.image('corp', '/static/img/ltz/Кузов.png');
+    this.load.image('shassi', '/static/img/ltz/шасси.png');
+    this.load.image("shassi_none", '/static/img/ltz/шасси_тень.png')
+    this.load.image("corp_none", '/static/img/ltz/Кузов_тень.png')
+    this.load.image("background", '/static/img/ltz/фон.png')
+    this.load.audio("set_us", '/static/img/ltz/sound_set.mp3');
+    this.load.image("wheel", '/static/img/ltz/колёсные_пары.png');
+    this.load.image("wheel_none", '/static/img/ltz/колёсные_пары_тень.png');
+    this.load.image("box1", '/static/img/ltz/box.png');
+    this.load.image("box2", '/static/img/ltz/box.png');
+    this.load.image("box3", '/static/img/ltz/box.png');
     this.load.video("Run_out", '/static/movie/TPL.mp4');
 }
 

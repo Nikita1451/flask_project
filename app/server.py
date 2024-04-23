@@ -105,10 +105,8 @@ def add_score(id):
     # здесь нужно отправить запрос к БД, в котором для фабрики, которую прошел пользователь, будет проставлено passed
     form = UserFabricForm()
     db_sess = db_session.create_session()
-    # Он почему-то ругается на эти строчки ниже
-    # if db_sess.query(User, Fabrics).filter(User.id == form.user_id and Fabrics.id == form.fabric_id).first():
-    #     return render_template(title='Регистрация', form=form,
-    #                             message="Такой пользователь уже есть")
+    if db_sess.query(UserFabric).filter(UserFabric.user_id == current_user.id, UserFabric.fabric_id == id).first():
+        return redirect(f'/diploms/{id}')
     user_fabric = UserFabric(
         user_id=current_user.id,
         fabric_id=id

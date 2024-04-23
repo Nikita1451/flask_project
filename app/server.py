@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, url_for, request
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from forms.user_fabric import UserFabricForm
 from data.user_fabric import UserFabric
-from app.email.sender import send_email
+from app.sender import send_email
 from dotenv import load_dotenv
 from forms.user import RegisterForm, LoginForm
 from data.users import User

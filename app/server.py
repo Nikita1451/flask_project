@@ -1,8 +1,12 @@
 from flask import Flask, render_template, redirect, url_for
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from forms.user_fabric import UserFabricForm
+from data.user_fabric import UserFabric
 
 from forms.user import RegisterForm, LoginForm
+from data.fabrics import Fabrics
 from data.users import User
+
 from data import db_session
 
 app = Flask(__name__, static_url_path='/static')
@@ -77,9 +81,22 @@ def login():
     return render_template('login.html', title='Авторизация', form=form)
 
 
-@app.route('/add_score', methods=['POST'])
-def add_score():
+
+@app.route('/add_score/<int:id>', methods=['GET', 'POST'])
+def add_score(id):
     # здесь нужно отправить запрос к БД, в котором для фабрики, которую прошел пользователь, будет проставлено passed
+    form = UserFabricForm()
+    db_sess = db_session.create_session()
+    # он почему-то ругается на эти строчки ниже
+    # if db_sess.query(User, Fabrics).filter(User.id == form.user_id and Fabrics.id == form.fabric_id).first():
+    #     return render_template(title='Регистрация', form=form,
+    #                             message="Такой пользователь уже есть")
+    user_fabric = UserFabric(
+            user_id=current_user.id,
+            fabric_id=id
+    )
+    db_sess.add(user_fabric)
+    db_sess.commit()
     print(current_user)
     return 'OK'
 

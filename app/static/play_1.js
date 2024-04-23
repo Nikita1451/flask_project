@@ -167,10 +167,11 @@ function update() {
         video.play(true);
         setTimeout(function() {
             video.stop("");
-            window.location.replace("http://127.0.0.1:5000");
+            window.location.replace("http://127.0.0.1:5000/add_score/1");
 }, 12000);
     }
 }
+
 
 function checkOverlap(spriteA, spriteB) {
     var boundsA = spriteA.getBounds();

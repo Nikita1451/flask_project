@@ -1,7 +1,11 @@
+var width_e = window.innerWidth * window.devicePixelRatio;
+var height_e = window.innerHeight * window.devicePixelRatio
+var coeff = width_e / 2560;
+
 var config = {
     type: Phaser.CANVAS,
-    width: 2568,
-    height: 1440,
+    width: width_e, // Adjust width based on device resolution
+    height: height_e,
     scene: {
         preload: preload,
         create: create,
@@ -28,17 +32,17 @@ var flag_of = false;
 var put_on = false;
 
 function preload() {
-    this.load.image('corp', '/static/img/ltz/Кузов.png');
-    this.load.image('shassi', '/static/img/ltz/шасси.png');
-    this.load.image("shassi_none", '/static/img/ltz/шасси_тень.png')
-    this.load.image("corp_none", '/static/img/ltz/Кузов_тень.png')
-    this.load.image("background", '/static/img/ltz/фон.png')
-    this.load.audio("set_us", '/static/img/ltz/sound_set.mp3');
-    this.load.image("wheel", '/static/img/ltz/колёсные_пары.png');
-    this.load.image("wheel_none", '/static/img/ltz/колёсные_пары_тень.png');
-    this.load.image("box1", '/static/img/ltz/box.png');
-    this.load.image("box2", '/static/img/ltz/box.png');
-    this.load.image("box3", '/static/img/ltz/box.png');
+    this.load.image('corp', '/static/img/Кузов.png');
+    this.load.image('shassi', '/static/img/шасси.png');
+    this.load.image("shassi_none", '/static/img/шасси_тень.png')
+    this.load.image("corp_none", '/static/img/Кузов_тень.png')
+    this.load.image("background", '/static/img/фон.png')
+    this.load.audio("set_us", '/static/img/sound_set.mp3');
+    this.load.image("wheel", '/static/img/колёсные_пары.png');
+    this.load.image("wheel_none", '/static/img/колёсные_пары_тень.png');
+    this.load.image("box1", '/static/img/box.png');
+    this.load.image("box2", '/static/img/box.png');
+    this.load.image("box3", '/static/img/box.png');
     this.load.video("Run_out", '/static/movie/TPL.mp4');
 }
 
@@ -47,17 +51,17 @@ function create() {
     background.displayWidth = this.sys.game.config.width;
     background.displayHeight = this.sys.game.config.height;
     var sound = this.sound.add("set_us")
-    this.add.image(300, 200, "box1").setScale(2.1);
-    this.add.image(2560 / 2, 200, "box2").setScale(2.1);
-    this.add.image(2560 - 300, 200, "box3").setScale(2.1);
-    img_corp = this.add.image(300, 100, 'corp').setScale(0.35).setInteractive();
-    img_corp_none = this.add.image(1200, 968, "corp_none").setInteractive();
-    img_shassi_none = this.add.image(1200, 968, "shassi_none").setInteractive();
-    img_shassi = this.add.image(2560/2, 100, 'shassi').setScale(0.35).setInteractive();
-    img_wheel = this.add.image(2560 - 300, 100, "wheel").setScale(0.35).setInteractive();
-    img_wheel_none = this.add.image(1200, 968, 'wheel_none').setInteractive();
-    video = this.add.video(2568 / 2, 1440/2, "Run_out");
-    video.setScale(2568 / video.width, 1440 / video.height);
+    this.add.image(300* coeff, 200* coeff, "box1").setScale(2.1 * coeff);
+    this.add.image(2560 / 2 * coeff, 200* coeff, "box2").setScale(2.1* coeff);
+    this.add.image((2560 - 300) * coeff, 200* coeff, "box3").setScale(2.1* coeff);
+    img_corp = this.add.image(300* coeff, 100* coeff, 'corp').setScale(0.35* coeff).setInteractive();
+    img_corp_none = this.add.image(1200* coeff, 968* coeff, "corp_none").setScale(1 * coeff).setInteractive();
+    img_shassi_none = this.add.image(1200* coeff, 968 * coeff, "shassi_none").setScale(1 * coeff).setInteractive();
+    img_shassi = this.add.image(2560/2* coeff, 100* coeff, 'shassi').setScale(0.35* coeff).setInteractive();
+    img_wheel = this.add.image((2560 - 300)* coeff, 100* coeff, "wheel").setScale(0.35* coeff).setInteractive();
+    img_wheel_none = this.add.image(1200* coeff, 968* coeff, 'wheel_none').setScale(1 * coeff).setInteractive();
+    video = this.add.video(2560 / 2* coeff, 1440/2* coeff, "Run_out");
+    video.setScale(2560 / video.width * coeff, 1440 / video.height * coeff);
     video.setVisible(false);
 
      video.on('complete', function () {
@@ -86,9 +90,9 @@ function create() {
     this.input.on('pointerup', function(pointer) {
         if (isDraggingImage1 && is1Complete) {
             isDraggingImage1 = false;
-            img_corp.x = 1200;
-            img_corp.y = 968;
-            img_corp.setScale(1);
+            img_corp.x = 1200* coeff;
+            img_corp.y = 968* coeff;
+            img_corp.setScale(1* coeff);
             img_corp_none.setVisible(false);
             // Запуск звука
             sound.play();
@@ -97,9 +101,9 @@ function create() {
         else { isDraggingImage1 = false};
         if (isDraggingImage2 && is2Complete) {
             isDraggingImage2 = false;
-            img_shassi.x = 1200;
-            img_shassi.y = 968;
-            img_shassi.setScale(1);
+            img_shassi.x = 1200* coeff;
+            img_shassi.y = 968* coeff;
+            img_shassi.setScale(1* coeff);
             img_shassi_none.setVisible(false);
             sound.play();
             // Запуск звука
@@ -108,9 +112,9 @@ function create() {
         else {isDraggingImage2 = false;};
         if (isDraggingImage3 && is3Complete){
             isDraggingImage3 = false;
-            img_wheel.x = 1200;
-            img_wheel.y = 968;
-            img_wheel.setScale(1);
+            img_wheel.x = 1200* coeff;
+            img_wheel.y = 968* coeff;
+            img_wheel.setScale(1* coeff);
             img_wheel_none.setVisible(false);
             sound.play();
             // Запуск звука
@@ -157,41 +161,15 @@ function update() {
             img_wheel_none.setVisible(true);
         }
     }
-//    if (items == 3 && flag_of == false){
-//        video.setVisible(true);
-//         flag_of = true;
-//        video.play(true);
-//        setTimeout(function() {
-//            video.stop("");
-//            window.location.replace("http://127.0.0.1:5000/add_score");
-//}, 12000);
-//    }
-if (items == 3 && flag_of == false) {
-    video.setVisible(true);
-    flag_of = true;
-    video.play(true);
-    setTimeout(function() {
-        video.stop("");
-        fetch('http://127.0.0.1:5000/add_score', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ signal: 'return_to_main' })
-        })
-        .then(response => {
-            if (response.ok) {
-                console.log('POST запрос выполнен успешно');
-                window.location.replace("http://127.0.0.1:5000");
-            } else {
-                console.error('Ошибка выполнения POST запроса');
-            }
-        })
-        .catch(error => {
-            console.error('Произошла ошибка:', error);
-        });
-    }, 12000);
-}
+    if (items == 3 && flag_of == false){
+        video.setVisible(true);
+         flag_of = true;
+        video.play(true);
+        setTimeout(function() {
+            video.stop("");
+            window.location.replace("http://127.0.0.1:5000");
+}, 12000);
+    }
 }
 
 function checkOverlap(spriteA, spriteB) {

@@ -1,18 +1,37 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from forms.user_fabric import UserFabricForm
 from data.user_fabric import UserFabric
-
+from app.email.sender import send_email
+from dotenv import load_dotenv
 from forms.user import RegisterForm, LoginForm
-from data.fabrics import Fabrics
 from data.users import User
 
 from data import db_session
 
 app = Flask(__name__, static_url_path='/static')
+load_dotenv()
 login_manager = LoginManager()
 login_manager.init_app(app)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
+
+
+@app.route('/diploms/<play_id>', methods=["GET", 'POST'])
+def diplom(play_id):
+    print("проверка")
+    if request.method == 'POST':
+        print("проверка 2")
+        return render_template(f"base.html")
+    return render_template(f"gr_{play_id}.html")
+
+
+@app.route("/diploms", methods=["GET", "POST"])
+def diplom_sett():
+    if request.method == "POST":
+        if 'email_button' in request.form:
+            return render_template("email_push.html")
+        if 'push_email' in request.form:
+            return redirect(f"/email/{(request.form['firstName'], request.form['lastName'])}")
 
 
 @login_manager.user_loader
@@ -38,7 +57,7 @@ def logout():
 @app.route("/")
 def index():
     if not current_user.is_authenticated:
-        return redirect(url_for('login'))
+        return redirect(url_for('register'))
     # Достаем из БД, параметр passed из отдельной таблицы, соединяющей user and fabric
     fabrics = [
         {"id": 1, "title": "ЛТЗ", "image": "ltz.jpg", "passed": True},
@@ -81,7 +100,6 @@ def login():
     return render_template('login.html', title='Авторизация', form=form)
 
 
-
 @app.route('/add_score/<int:id>', methods=['GET', 'POST'])
 def add_score(id):
     # здесь нужно отправить запрос к БД, в котором для фабрики, которую прошел пользователь, будет проставлено passed
@@ -92,13 +110,23 @@ def add_score(id):
     #     return render_template(title='Регистрация', form=form,
     #                             message="Такой пользователь уже есть")
     user_fabric = UserFabric(
-            user_id=current_user.id,
-            fabric_id=id
+        user_id=current_user.id,
+        fabric_id=id
     )
     db_sess.add(user_fabric)
     db_sess.commit()
     print(current_user)
-    return 'OK'
+    return redirect(f'/diploms/{id}')
+
+
+@app.route("/email/<name_surname>", methods=["GET", "POST"])
+def post_form(name_surname):
+    email = current_user.email
+    print(email)
+    if send_email(email, "Test letter", "test text",
+                  ["1.png", "pdfdoc.pdf", "text.txt"]):
+        return f"Letter send successfully from to the address {email}"
+    return f"An error occurred while sending an email to {email}"
 
 
 def main():
